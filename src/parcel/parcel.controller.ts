@@ -6,6 +6,7 @@ import {
   Param,
   Body,
   UseGuards,
+  Delete,
 } from '@nestjs/common';
 import { ParcelService } from './parcel.service';
 import { Roles } from 'src/common/decorators/roles.decorator';
@@ -28,9 +29,24 @@ export class ParcelController {
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
+  @Put(':id/update')
+  update(@Param('id') id: string, @Body() body) {
+    return this.parcelService.updateParcel(id, body);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    this.parcelService.deleteParcel(id);
+    return { message: 'Parcel deleted successfully.' };
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
   @Put(':id/assign')
   assign(@Param('id') id: string, @Body() body: { assignedAgentId: string }) {
-    console.log('📦 Incoming body:', body);
+    // console.log('📦 Incoming body:', body);
     return this.parcelService.assignAgent(id, body.assignedAgentId);
   }
 
@@ -47,5 +63,12 @@ export class ParcelController {
     @Body() body: { lat: number; lng: number },
   ) {
     return this.parcelService.updateCurrentLocation(id, body.lat, body.lng);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Get('analytics')
+  getAdvancedAnalytics() {
+    return this.parcelService.getAdvancedAnalytics();
   }
 }

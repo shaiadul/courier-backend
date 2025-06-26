@@ -8,7 +8,12 @@ export class Parcel extends Document {
   @Prop() deliveryAddress: string;
   @Prop() parcelType: string;
   @Prop() isCOD: boolean;
-  @Prop({ default: 'Booked' }) status: string;
+  @Prop({
+    type: String,
+    enum: ['Booked', 'Assigned', 'Delivered', 'Cancelled'],
+    default: 'Booked',
+  })
+  status: string;
   @Prop({ type: Types.ObjectId, ref: 'User' }) sender: Types.ObjectId;
   @Prop({ type: Types.ObjectId, ref: 'User', default: null })
   assignedAgent: Types.ObjectId;
