@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Parcel } from './parcel.schema';
 import { Model } from 'mongoose';
@@ -56,8 +56,24 @@ export class ParcelService {
     );
   }
 
-  updateStatus(id: string, status: string) {
-    return this.parcelModel.findByIdAndUpdate(id, { status }, { new: true });
+  async updateStatus(id: string, status: string) {
+    const parcel = await this.parcelModel.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true },
+    );
+
+    if (!parcel) {
+      throw new NotFoundException(`Parcel with id ${id} not found`);
+    }
+
+    await this.notificationService.sendParcelStatusEmail(
+      parcel.recipientEmail,
+      parcel.recipientName,
+      status,
+    );
+
+    return parcel;
   }
 
   updateCurrentLocation(id: string, lat: number, lng: number) {

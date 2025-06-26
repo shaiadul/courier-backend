@@ -1,3 +1,31 @@
-<p>Hi {{name}},</p>
-<p>Your parcel has been booked successfully! ✅</p>
-<p>Your tracking ID: <strong>{{trackingId}}</strong></p>
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: 'Segoe UI', sans-serif; background-color: #f9f9f9; padding: 40px 0;">
+  <tr>
+    <td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 40px;">
+        <tr>
+          <td align="center" style="padding-bottom: 20px;">
+            <h2 style="color: #2b2d42; font-size: 24px; margin: 0;">📦 Parcel Booked Successfully!</h2>
+          </td>
+        </tr>
+        <tr>
+          <td style="color: #333333; font-size: 16px; line-height: 1.6;">
+            <p>Hi <strong>{{name}}</strong>,</p>
+            <p>We're excited to let you know that your parcel has been booked successfully! 🎉</p>
+            <p>Your tracking ID is:</p>
+            <div style="background-color: #e9f5ff; color: #1d4ed8; font-weight: bold; padding: 12px 20px; border-radius: 6px; display: inline-block; margin: 10px 0;">
+              {{trackingId}}
+            </div>
+            <p>You can use this ID to track the status of your parcel at any time.</p>
+            <p style="margin-top: 30px;">Thank you for choosing <strong>Courier System</strong>! 🚚</p>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" style="padding-top: 30px; font-size: 14px; color: #999999;">
+            <p style="margin: 0;">This is an automated message. Please do not reply.</p>
+            <p style="margin: 0;">&copy; {{year}} Courier System. All rights reserved.</p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

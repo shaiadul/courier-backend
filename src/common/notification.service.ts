@@ -13,6 +13,7 @@ export class NotificationService {
       context: {
         name,
         status,
+        year: new Date().getFullYear(),
       },
     });
   }
@@ -25,9 +26,8 @@ export class NotificationService {
       context: {
         name,
         trackingId,
+        year: new Date().getFullYear(),
       },
     });
   }
 }
-
-
