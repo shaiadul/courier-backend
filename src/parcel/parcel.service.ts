@@ -2,13 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Parcel } from './parcel.schema';
 import { Model } from 'mongoose';
+import { NotificationService } from 'src/common/notification.service';
 
 @Injectable()
 export class ParcelService {
-  constructor(@InjectModel(Parcel.name) private parcelModel: Model<Parcel>) {}
+  constructor(
+    @InjectModel(Parcel.name) private parcelModel: Model<Parcel>,
+    private readonly notificationService: NotificationService,
+  ) {}
 
-  book(data) {
-    return this.parcelModel.create({
+  async book(data: any): Promise<any> {
+    const parcel = await this.parcelModel.create({
       ...data,
       pickupLocation: {
         lat: data.pickupLat,
@@ -19,6 +23,14 @@ export class ParcelService {
         lng: data.deliveryLng,
       },
     });
+
+    await this.notificationService.sendBookingEmail(
+      data.recipientEmail,
+      data.recipientName,
+      parcel._id?.toString() || '',
+    );
+
+    return parcel;
   }
 
   findAll() {

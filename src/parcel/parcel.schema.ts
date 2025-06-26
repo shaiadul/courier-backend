@@ -4,6 +4,7 @@ import { Document, Types } from 'mongoose';
 @Schema({ timestamps: true })
 export class Parcel extends Document {
   @Prop() recipientName: string;
+  @Prop() recipientEmail: string;
   @Prop() pickupAddress: string;
   @Prop() deliveryAddress: string;
   @Prop() parcelType: string;
