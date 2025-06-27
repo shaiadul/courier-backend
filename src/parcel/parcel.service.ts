@@ -37,6 +37,10 @@ export class ParcelService {
     return this.parcelModel.find().populate('sender assignedAgent').exec();
   }
 
+  findParcelBySenderId(senderId: string) {
+    return this.parcelModel.find({ sender: senderId });
+  }
+
   updateParcel(id: string, data: Partial<Parcel>) {
     return this.parcelModel.findByIdAndUpdate(id, data, { new: true });
   }

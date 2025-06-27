@@ -27,6 +27,12 @@ export class ParcelController {
     return this.parcelService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('sender/:senderId')
+  findParcelBySenderId(@Param('senderId') senderId: string) {
+    return this.parcelService.findParcelBySenderId(senderId);
+  }
+
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('admin')
   @Put(':id/update')
