@@ -3,12 +3,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Parcel } from './parcel.schema';
 import { Model } from 'mongoose';
 import { NotificationService } from 'src/common/notification.service';
+import { LocationGateway } from 'src/socket/location.gateway';
 
 @Injectable()
 export class ParcelService {
   constructor(
     @InjectModel(Parcel.name) private parcelModel: Model<Parcel>,
     private readonly notificationService: NotificationService,
+    private readonly locationGateway: LocationGateway,
   ) {}
 
   async book(data: any): Promise<any> {
@@ -60,6 +62,15 @@ export class ParcelService {
     );
   }
 
+  async getParcelByAgentId(agentId: string) {
+    const parcels = await this.parcelModel
+      .find({ assignedAgent: agentId })
+      .populate('sender assignedAgent')
+      .exec();
+
+    return parcels;
+  }
+
   async updateStatus(id: string, status: string) {
     const parcel = await this.parcelModel.findByIdAndUpdate(
       id,
@@ -80,13 +91,24 @@ export class ParcelService {
     return parcel;
   }
 
-  updateCurrentLocation(id: string, lat: number, lng: number) {
-    return this.parcelModel.findByIdAndUpdate(
+  async updateCurrentLocation(id: string, lat: number, lng: number) {
+    const parcel = await this.parcelModel.findByIdAndUpdate(
       id,
       { currentLocation: { lat, lng } },
       { new: true },
     );
+
+    if (parcel) {
+      this.locationGateway.server.emit(`location-update-${parcel._id}`, {
+        parcelId: parcel._id,
+        lat,
+        lng,
+      });
+    }
+
+    return parcel;
   }
+
   async getAdvancedAnalytics() {
     const [
       byType,

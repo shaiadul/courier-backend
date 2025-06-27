@@ -56,6 +56,11 @@ export class ParcelController {
     return this.parcelService.assignAgent(id, body.assignedAgentId);
   }
 
+  @Get('agent/:agentId')
+  getParcelByAgentId(@Param('agentId') agentId: string) {
+    return this.parcelService.getParcelByAgentId(agentId);
+  }
+
   @Put(':id/status')
   updateStatus(@Param('id') id: string, @Body() body: { status: string }) {
     return this.parcelService.updateStatus(id, body.status);

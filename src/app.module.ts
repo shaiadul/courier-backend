@@ -8,6 +8,7 @@ import { CommonModule } from './common/common.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { join } from 'path';
+import { LocationGateway } from './socket/location.gateway';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { join } from 'path';
     ParcelModule,
     AuthModule,
     CommonModule,
+    LocationGateway,
     MailerModule.forRoot({
       transport: {
         service: 'gmail',
