@@ -27,6 +27,13 @@ export class ParcelController {
     return this.parcelService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Get('analytics')
+  getAdvancedAnalytics() {
+    return this.parcelService.getAdvancedAnalytics();
+  }
+
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -80,12 +87,5 @@ export class ParcelController {
     @Body() body: { lat: number; lng: number },
   ) {
     return this.parcelService.updateCurrentLocation(id, body.lat, body.lng);
-  }
-
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
-  @Get('analytics')
-  getAdvancedAnalytics() {
-    return this.parcelService.getAdvancedAnalytics();
   }
 }

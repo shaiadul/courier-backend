@@ -40,7 +40,10 @@ export class ParcelService {
   }
 
   findOne(id: string) {
-    return this.parcelModel.findById(id).populate('sender assignedAgent').exec();
+    return this.parcelModel
+      .findById(id)
+      .populate('sender assignedAgent')
+      .exec();
   }
 
   findParcelBySenderId(senderId: string) {
