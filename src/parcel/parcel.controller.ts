@@ -28,6 +28,12 @@ export class ParcelController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.parcelService.findOne(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('sender/:senderId')
   findParcelBySenderId(@Param('senderId') senderId: string) {
     return this.parcelService.findParcelBySenderId(senderId);
